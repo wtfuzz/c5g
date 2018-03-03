@@ -26,7 +26,7 @@ Future versions will have a boot ROM and MicroSD support.
 - mor1kx OpenRISC CPU v5.0-r1
 - LPDDR2 Avalon hard controller connected using Wishbone bridge
 - FTDI USB connected to 16550 uart0
-- Red LED[0-7] connected to gpio0
+- Buttons, switches, LEDs connected to CorePort on gpio0
 
 ### Memory Map
 
@@ -34,11 +34,12 @@ Future versions will have a boot ROM and MicroSD support.
 | ------------ |-------------|----------|
 | 0x00000000   | 0x200000000 | LPDDR2   |
 | 0x90000000   | 0x000000020 | uart0    |
-| 0x91000000   | 0x000000002 | gpio0    |
+| 0x91000000   | 0x000000020 | gpio0    |
 
 ### Links
 
 - [FuseSoC](https://github.com/olofk/fusesoc) soft system on chip package manager
+- [CorePort](https://github/com/wtfuzz/coreport) Interrupt enabled GPIO port component
 - [NuttX OpenRISC port](https://bitbucket.org/extent3d/nuttx/branch/or1k)
 - [OpenRISC](https://openrisc.io/)
 - [Terasic C5G](http://c5g.terasic.com) Board Documentation
