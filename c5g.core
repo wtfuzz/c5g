@@ -1,0 +1,43 @@
+CAPI=1
+
+[main]
+name = c5g
+description = "Terasic C5G OpenRISC System"
+depend =
+  ::adv_debug_sys
+  ::altera_virtual_jtag
+  ::gpio
+  ::jtag_tap
+  ::mor1kx:5.0
+  ::or1k_bootloaders
+  ::uart16550
+  ::wb_intercon
+  ::wb_ram
+  ::wb_avalon_bridge
+
+backend = quartus
+
+[quartus]
+family = "Cyclone V"
+device = 5CGXFC5C6F27C7
+sdc_files = data/c5g.sdc
+tcl_files = data/pinmap.tcl
+qsys_files = data/c5g.qsys
+quartus_options = --64bit
+
+[fileset rtl_files]
+files =
+  rtl/verilog/clkgen.v
+  rtl/verilog/orpsoc_top.v
+  backend/rtl/verilog/pll.v
+  rtl/verilog/wb_intercon.v
+file_type = verilogSource
+
+[fileset include_files]
+files =
+  rtl/verilog/include/timescale.v
+  rtl/verilog/include/orpsoc-defines.v
+  rtl/verilog/wb_intercon.vh
+file_type = verilogSource
+is_include_file = true
+
