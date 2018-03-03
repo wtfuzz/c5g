@@ -24,7 +24,8 @@ module c5g (
 	memory_mem_dqs,
 	memory_mem_dqs_n,
 	oct_rzqin,
-	reset_reset_n);	
+	reset_reset_n,
+	lpddr2_pll_ref_clk_clk);	
 
 	input		clk_clk;
 	output		lpddr2_avl_0_waitrequest_n;
@@ -51,4 +52,5 @@ module c5g (
 	inout	[3:0]	memory_mem_dqs_n;
 	input		oct_rzqin;
 	input		reset_reset_n;
+	input		lpddr2_pll_ref_clk_clk;
 endmodule

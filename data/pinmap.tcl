@@ -2,7 +2,10 @@
 # Clocks
 #
 
-set_location_assignment PIN_R20 -to sys_clk_pad_i
+set_location_assignment PIN_R20 -to ref_clk_pad_i
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ref_clk_pad_i
+
+set_location_assignment PIN_N20 -to sys_clk_pad_i
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to sys_clk_pad_i
 
 #
@@ -25,42 +28,78 @@ set_instance_assignment -name IO_STANDARD "2.5-V" -to uart0_stx_pad_o
 #
 # GPIO0 - LEDs
 #
-set_location_assignment PIN_F7 -to gpio0_io[0]
+
+# Green
+set_location_assignment PIN_L7 -to gpio0_io[0]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[0]
-set_location_assignment PIN_F6 -to gpio0_io[1]
+set_location_assignment PIN_K6 -to gpio0_io[1]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[1]
-set_location_assignment PIN_G6 -to gpio0_io[2]
+set_location_assignment PIN_D8 -to gpio0_io[2]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[2]
-set_location_assignment PIN_G7 -to gpio0_io[3]
+set_location_assignment PIN_E9 -to gpio0_io[3]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[3]
-set_location_assignment PIN_J8 -to gpio0_io[4]
+set_location_assignment PIN_A5 -to gpio0_io[4]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[4]
-set_location_assignment PIN_J7 -to gpio0_io[5]
+set_location_assignment PIN_B6 -to gpio0_io[5]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[5]
-set_location_assignment PIN_K10 -to gpio0_io[6]
+set_location_assignment PIN_H8 -to gpio0_io[6]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[6]
-set_location_assignment PIN_K8 -to gpio0_io[7]
+set_location_assignment PIN_H9 -to gpio0_io[7]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[7]
-set_location_assignment PIN_H7 -to gpio0_io[8]
+
+# Red
+set_location_assignment PIN_F7 -to gpio0_io[8]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[8]
-set_location_assignment PIN_J10 -to gpio0_io[9]
+set_location_assignment PIN_F6 -to gpio0_io[9]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[9]
-set_location_assignment PIN_L7 -to gpio0_io[10]
+set_location_assignment PIN_G6 -to gpio0_io[10]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[10]
-set_location_assignment PIN_K6 -to gpio0_io[11]
+set_location_assignment PIN_G7 -to gpio0_io[11]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[11]
-set_location_assignment PIN_D8 -to gpio0_io[12]
+set_location_assignment PIN_J8 -to gpio0_io[12]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[12]
-set_location_assignment PIN_E9 -to gpio0_io[13]
+set_location_assignment PIN_J7 -to gpio0_io[13]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[13]
-set_location_assignment PIN_A5 -to gpio0_io[14]
+set_location_assignment PIN_K10 -to gpio0_io[14]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[14]
-set_location_assignment PIN_B6 -to gpio0_io[15]
+set_location_assignment PIN_K8 -to gpio0_io[15]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[15]
-set_location_assignment PIN_H8 -to gpio0_io[16]
+set_location_assignment PIN_H7 -to gpio0_io[16]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[16]
-set_location_assignment PIN_H9 -to gpio0_io[17]
+set_location_assignment PIN_J10 -to gpio0_io[17]
 set_instance_assignment -name IO_STANDARD "2.5-V" -to gpio0_io[17]
+
+# Momentary Switches
+set_location_assignment PIN_P11 -to gpio0_io[18]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[18]
+set_location_assignment PIN_P12 -to gpio0_io[19]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[19]
+set_location_assignment PIN_Y15 -to gpio0_io[20]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[20]
+set_location_assignment PIN_Y16 -to gpio0_io[21]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[21]
+
+# Slide Switches
+set_location_assignment PIN_AC9 -to gpio0_io[22]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[22]
+set_location_assignment PIN_AE10 -to gpio0_io[23]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[23]
+set_location_assignment PIN_AD13 -to gpio0_io[24]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[24]
+set_location_assignment PIN_AC8 -to gpio0_io[25]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[25]
+set_location_assignment PIN_W11 -to gpio0_io[26]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[26]
+set_location_assignment PIN_AB10 -to gpio0_io[27]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[27]
+set_location_assignment PIN_V10 -to gpio0_io[28]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[28]
+set_location_assignment PIN_AC10 -to gpio0_io[29]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[29]
+set_location_assignment PIN_Y11 -to gpio0_io[30]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[30]
+set_location_assignment PIN_AC19 -to gpio0_io[31]
+set_instance_assignment -name IO_STANDARD "1.2-V" -to gpio0_io[31]
 
 #
 # SRAM

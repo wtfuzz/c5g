@@ -24,7 +24,8 @@
 			memory_mem_dqs                  : inout std_logic_vector(3 downto 0)  := (others => 'X'); -- mem_dqs
 			memory_mem_dqs_n                : inout std_logic_vector(3 downto 0)  := (others => 'X'); -- mem_dqs_n
 			oct_rzqin                       : in    std_logic                     := 'X';             -- rzqin
-			reset_reset_n                   : in    std_logic                     := 'X'              -- reset_n
+			reset_reset_n                   : in    std_logic                     := 'X';             -- reset_n
+			lpddr2_pll_ref_clk_clk          : in    std_logic                     := 'X'              -- clk
 		);
 	end component c5g;
 

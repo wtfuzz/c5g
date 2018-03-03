@@ -1,16 +1,16 @@
 `include "orpsoc-defines.v"
 
-module orpsoc_top #(
-  parameter uart0_aw = 3
-)(
-  input           sys_clk_pad_i,
+module orpsoc_top
+(
+  input           sys_clk_pad_i, // B5B
+  input           ref_clk_pad_i, // B6A
   input           rst_n_pad_i,
 
 `ifdef SIM
-  output    tdo_pad_o,
-  input   tms_pad_i,
-  input   tck_pad_i,
-  input   tdi_pad_i,
+  output          tdo_pad_o,
+  input           tms_pad_i,
+  input           tck_pad_i,
+  input           tdi_pad_i,
 `endif
 
   output  [17:0]  sram_a_o,
@@ -24,8 +24,10 @@ module orpsoc_top #(
   input           uart0_srx_pad_i,
   output          uart0_stx_pad_o,
 
-  inout   [17:0]  gpio0_io,
-  input   [3:0]   gpio1_i,
+  inout   [31:0]  gpio0_io,
+  //input   [31:0]  gpio1_io,
+  input   [31:0]  gpio2_io,
+  input   [31:0]  gpio3_io,
 
   output  [9:0]   DDR2LP_CA,
   output  [1:0]   DDR2LP_CKE,
@@ -50,9 +52,15 @@ parameter IDCODE_VALUE = 32'h14951185;
 
 wire  wb_clk, wb_rst;
 wire  dbg_tck;
+wire  async_rst;
 
-assign wb_clk = sys_clk_pad_i;
-assign wb_rst = !rst_n_pad_i;
+clkgen clkgen0 (
+  .sys_clk_pad_i    (sys_clk_pad_i),
+  .rst_n_pad_i      (rst_n_pad_i),
+  .async_rst_o      (async_rst),
+  .wb_clk_o         (wb_clk),
+  .wb_rst_o         (wb_rst),
+);
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -74,30 +82,35 @@ wire [3:0]  lpddr2_avl_byteenable;
 wire        lpddr2_avl_write;
 
 // QSYS generated system for LPDDR2 controller
-	c5g u0 (
-    .clk_clk                            (sys_clk_pad_i),
+  c5g u0 (
+    /* 50MHz reference clock for memory controller PLL */
+    .lpddr2_pll_ref_clk_clk             (ref_clk_pad_i),
+
+    /* Wishbone clock used to drive Avalon MM slave */
+    .clk_clk                            (wb_clk),
+
     .reset_reset_n                      (rst_n_pad_i),
 
-		.lpddr2_avl_0_address               (lpddr2_avl_address),
-		.lpddr2_avl_0_burstcount            (lpddr2_avl_burstcount),
-		.lpddr2_avl_0_waitrequest_n         (lpddr2_avl_waitrequest_n),
-		.lpddr2_avl_0_readdata              (lpddr2_avl_readdata),
-		.lpddr2_avl_0_readdatavalid         (lpddr2_avl_readdatavalid),
-		.lpddr2_avl_0_read                  (lpddr2_avl_read),
-		.lpddr2_avl_0_writedata             (lpddr2_avl_writedata),
-		.lpddr2_avl_0_byteenable            (lpddr2_avl_byteenable),
-		.lpddr2_avl_0_write                 (lpddr2_avl_write),
+    .lpddr2_avl_0_address               (lpddr2_avl_address),
+    .lpddr2_avl_0_burstcount            (lpddr2_avl_burstcount),
+    .lpddr2_avl_0_waitrequest_n         (lpddr2_avl_waitrequest_n),
+    .lpddr2_avl_0_readdata              (lpddr2_avl_readdata),
+    .lpddr2_avl_0_readdatavalid         (lpddr2_avl_readdatavalid),
+    .lpddr2_avl_0_read                  (lpddr2_avl_read),
+    .lpddr2_avl_0_writedata             (lpddr2_avl_writedata),
+    .lpddr2_avl_0_byteenable            (lpddr2_avl_byteenable),
+    .lpddr2_avl_0_write                 (lpddr2_avl_write),
 
-		.memory_mem_ca                      (DDR2LP_CA),
-		.memory_mem_ck                      (DDR2LP_CK_p),
-		.memory_mem_ck_n                    (DDR2LP_CK_n),
-		.memory_mem_cke                     (DDR2LP_CKE[0]),
-		.memory_mem_cs_n                    (DDR2LP_CS_n[0]),
-		.memory_mem_dm                      (DDR2LP_DM),
-		.memory_mem_dq                      (DDR2LP_DQ),
-		.memory_mem_dqs                     (DDR2LP_DQS_p),
-		.memory_mem_dqs_n                   (DDR2LP_DQS_n),
-		.oct_rzqin                          (DDR2LP_OCT_RZQ)
+    .memory_mem_ca                      (DDR2LP_CA),
+    .memory_mem_ck                      (DDR2LP_CK_p),
+    .memory_mem_ck_n                    (DDR2LP_CK_n),
+    .memory_mem_cke                     (DDR2LP_CKE[0]),
+    .memory_mem_cs_n                    (DDR2LP_CS_n[0]),
+    .memory_mem_dm                      (DDR2LP_DM),
+    .memory_mem_dq                      (DDR2LP_DQ),
+    .memory_mem_dqs                     (DDR2LP_DQS_p),
+    .memory_mem_dqs_n                   (DDR2LP_DQS_n),
+    .oct_rzqin                          (DDR2LP_OCT_RZQ)
 );
 
 // Avalon to Wishbone Bridge
@@ -305,7 +318,7 @@ adbg_top dbg_if0 (
 
   // Wishbone debug master
   .wb_clk_i (wb_clk),
-  .wb_rst_i       (1'b0),
+  .wb_rst_i (1'b0),
   .wb_dat_i (wb_s2m_dbg_dat),
   .wb_ack_i (wb_s2m_dbg_ack),
   .wb_err_i (wb_s2m_dbg_err),
@@ -316,7 +329,7 @@ adbg_top dbg_if0 (
   .wb_stb_o (wb_m2s_dbg_stb),
   .wb_sel_o (wb_m2s_dbg_sel),
   .wb_we_o  (wb_m2s_dbg_we),
-  .wb_cab_o       (),
+  .wb_cab_o (),
   .wb_cti_o (wb_m2s_dbg_cti),
   .wb_bte_o (wb_m2s_dbg_bte),
 
@@ -413,35 +426,17 @@ uart_top uart16550_0 (
   .dcd_pad_i  (1'b0)
 );
 
-////////////////////////////////////////////////////////////////////////
-//
-// GPIO 0
-//
-// Connected to LEDs
-//
-////////////////////////////////////////////////////////////////////////
+/**
+ * CorePort GPIO Instance
+ */
 
-wire [17:0]  gpio0_in;
-wire [17:0]  gpio0_out;
-wire [17:0]  gpio0_dir;
+wire gpio0_irq;
 
-// Tristate logic for IO
-// 0 = input, 1 = output
-genvar                    i;
-generate
-  for (i = 0; i < 17; i = i+1) begin: gpio0_tris
-    assign gpio0_io[i] = gpio0_dir[i] ? gpio0_out[i] : 1'bz;
-    assign gpio0_in[i] = gpio0_dir[i] ? gpio0_out[i] : gpio0_io[i];
-  end
-endgenerate
-
-gpio gpio0 (
-  // GPIO bus
-  .gpio_i   (gpio0_in),
-  .gpio_o   (gpio0_out),
-  .gpio_dir_o (gpio0_dir),
+coreport gpio0 (
   // Wishbone slave interface
-  .wb_adr_i (wb_m2s_gpio0_adr[0]),
+  .wb_clk   (wb_clk),
+  .wb_rst   (wb_rst),
+  .wb_adr_i (wb_m2s_gpio0_adr),
   .wb_dat_i (wb_m2s_gpio0_dat),
   .wb_we_i  (wb_m2s_gpio0_we),
   .wb_cyc_i (wb_m2s_gpio0_cyc),
@@ -453,33 +448,11 @@ gpio gpio0 (
   .wb_err_o (wb_s2m_gpio0_err),
   .wb_rty_o (wb_s2m_gpio0_rty),
 
-  .wb_clk   (wb_clk),
-  .wb_rst   (wb_rst)
-);
-
-/*
-gpio gpio1 (
   // GPIO bus
-  .gpio_i   ({4'h0, gpio1_i}),
-  .gpio_o   (),
-  .gpio_dir_o (),
-  // Wishbone slave interface
-  .wb_adr_i (wb_m2s_gpio1_adr[0]),
-  .wb_dat_i (wb_m2s_gpio1_dat),
-  .wb_we_i  (wb_m2s_gpio1_we),
-  .wb_cyc_i (wb_m2s_gpio1_cyc),
-  .wb_stb_i (wb_m2s_gpio1_stb),
-  .wb_cti_i (wb_m2s_gpio1_cti),
-  .wb_bte_i (wb_m2s_gpio1_bte),
-  .wb_dat_o (wb_s2m_gpio1_dat),
-  .wb_ack_o (wb_s2m_gpio1_ack),
-  .wb_err_o (wb_s2m_gpio1_err),
-  .wb_rty_o (wb_s2m_gpio1_rty),
+  .gpio_io  (gpio0_io),
 
-  .wb_clk   (wb_clk),
-  .wb_rst   (wb_rst)
+  .irq      (gpio0_irq)
 );
-*/
 
 ////////////////////////////////////////////////////////////////////////
 //
@@ -491,7 +464,7 @@ assign or1k_irq[0] = 0; // Non-maskable inside OR1K
 assign or1k_irq[1] = 0; // Non-maskable inside OR1K
 assign or1k_irq[2] = uart0_irq;
 assign or1k_irq[3] = 0;
-assign or1k_irq[4] = 0;
+assign or1k_irq[4] = gpio0_irq;
 assign or1k_irq[5] = 0;
 assign or1k_irq[6] = 0;
 assign or1k_irq[7] = 0;

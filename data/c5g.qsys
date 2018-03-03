@@ -58,6 +58,11 @@
    type="avalon"
    dir="end" />
  <interface
+   name="lpddr2_pll_ref_clk"
+   internal="mem_if_lpddr2_emif_0.pll_ref_clk"
+   type="clock"
+   dir="end" />
+ <interface
    name="lpddr2_status"
    internal="mem_if_lpddr2_emif_0.status"
    type="conduit"
@@ -315,7 +320,7 @@
   <parameter name="PLL_P2C_READ_CLK_MULT_PARAM" value="0" />
   <parameter name="PLL_P2C_READ_CLK_PHASE_PS_PARAM" value="0" />
   <parameter name="PLL_P2C_READ_CLK_PHASE_PS_SIM_STR_PARAM" value="" />
-  <parameter name="PLL_SHARING_MODE" value="None" />
+  <parameter name="PLL_SHARING_MODE" value="Master" />
   <parameter name="PLL_WRITE_CLK_DIV_PARAM" value="0" />
   <parameter name="PLL_WRITE_CLK_FREQ_PARAM" value="0.0" />
   <parameter name="PLL_WRITE_CLK_FREQ_SIM_STR_PARAM" value="" />
@@ -408,11 +413,6 @@
    version="17.1"
    start="clk_0.clk"
    end="mem_if_lpddr2_emif_0.mp_wfifo_clk_0" />
- <connection
-   kind="clock"
-   version="17.1"
-   start="clk_0.clk"
-   end="mem_if_lpddr2_emif_0.pll_ref_clk" />
  <connection
    kind="reset"
    version="17.1"
