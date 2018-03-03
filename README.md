@@ -39,7 +39,7 @@ Future versions will have a boot ROM and MicroSD support.
 ### Links
 
 - [FuseSoC](https://github.com/olofk/fusesoc) soft system on chip package manager
-- [CorePort](https://github/com/wtfuzz/coreport) Interrupt enabled GPIO port component
+- [CorePort](https://github.com/wtfuzz/coreport) Interrupt enabled GPIO port component
 - [NuttX OpenRISC port](https://bitbucket.org/extent3d/nuttx/branch/or1k)
 - [OpenRISC](https://openrisc.io/)
 - [Terasic C5G](http://c5g.terasic.com) Board Documentation
